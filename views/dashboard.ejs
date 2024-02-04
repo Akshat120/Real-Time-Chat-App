@@ -15,5 +15,20 @@
 
     Welcome to Dashboard <%= user.username %>
 
+    <form action="/user/logout" method="post">
+        <button type="submit">Logout</button>
+    </form>
+
+    <table>
+        <% friends.forEach( friend => { %>
+        
+        <tr>
+            <td> <a href='/user/<%= user.id %>/chats/<%= friend.id %>' > <%= friend.name %> </a> </td>
+            <td> Online </td>
+        </tr>
+
+        <% }) %>
+    </table>
+
 </body>
 </html>

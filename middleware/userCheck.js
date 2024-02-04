@@ -40,6 +40,7 @@ exports.verifyUserToken = (req,res,next) => {
         })
     }
 }
+
 exports.shouldNotLoggedIn = (req,res,next) => {
     console.log("Middleware shouldNotLoggedIn got hit!!")
     next()
