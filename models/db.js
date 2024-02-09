@@ -49,3 +49,21 @@ exports.getUserById = (userId) => {
         return reject("User Not Found!")
     })
 }
+
+exports.getChatsByIdPair = (id1, id2) => {
+    if(id1 > id2) {
+        let c = id2
+        id2 = id1
+        id1 = c
+    }
+    return new Promise((resolve,reject)=>{
+        data.message.forEach(msg => {
+            if(msg.user1 == id1 && msg.user2 == id2) {
+                msg_list = msg.messages
+                msg_list.sort((a, b) => a.sent_at - b.sent_at);
+                return resolve(msg_list)
+            }
+        });
+        return resolve([])
+    })
+}

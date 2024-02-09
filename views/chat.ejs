@@ -54,16 +54,13 @@
         .receiver-container{
             background-color: rgb(245, 133, 133);
             width: 100%;
-            height:10vh;
             align-self: flex-start;
             display:flex;
             flex-direction: row;
-            /* align-items: flex-start; */
         }
         .sender-container{
             background-color: rgb(90, 155, 90);
             width: 100%;
-            height:10vh;
             align-self: flex-start;
             display:flex;
             flex-direction: row;
@@ -77,6 +74,14 @@
             margin:10px;
             align-self: center;
         }
+        #send-chat-btn{
+            cursor: pointer;
+            background-color: rgb(92, 56, 149);
+            color: white;
+        }
+        #send-chat-btn:hover{
+            background-color: rgb(151, 110, 216);
+        }
     </style>
 </head>
 <body>
@@ -86,17 +91,37 @@
     <form action="/user/logout" method="post">
         <button type="submit">Logout</button>
     </form>
-
     <div class="chat-container">
         <div class="chats-container">
+
+            <% for(let i=0; i<msg.length; i++){ %>
+
+                <% if(user.id == msg[i].from) { %>
+
+                    <div class="sender-container">
+                        <div class="chat-text-box">
+                            <%= msg[i].data %>
+                        </div>
+                    </div>
+
+                <% } else { %>
+                    <div class="receiver-container">
+                        <div class="chat-text-box">
+                            <%= msg[i].data %>
+                        </div>
+                    </div>
+                <% } %>
+            
+            <% } %>
+
             <div class="receiver-container">
                 <div class="chat-text-box">
-                    Hi $$$$, I'm $$$$.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ac faucibus leo, at finibus ligula. Pellentesque ullamcorper lobortis elit, a mollis enim vulputate id. Nulla elementum, eros vitae ultrices sollicitudin,
                 </div>
             </div>
             <div class="sender-container">
                 <div class="chat-text-box">
-                    Hi $$$$, I'm $$$$.
+                    mi urna ornare quam, et vehicula leo leo eu purus. Proin malesuada leo dolor, sit amet volutpat elit tincidunt eget. Nam vitae semper ante. Fusce blandit tempus libero vehicula commodo. Etiam efficitur mattis suscipit. Nulla suscipit mi eget lacus congue imperdiet.
                 </div>
             </div>
             <div class="receiver-container">
@@ -163,7 +188,7 @@
         <div class="write-text-container">
             <form action='/user/<%= user.id %>/push-msg' method="post" class="write-box">
                 <textarea class="input-box" placeholder="Write your message here." ></textarea>
-                <input type="submit" value="Send" class="send-box">
+                <input type="submit" id="send-chat-btn" value="Send" class="send-box">
             </form>
 
         </div>
