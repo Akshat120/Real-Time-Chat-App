@@ -15,7 +15,7 @@ exports.isUserLogged = (req,res,next) => {
                 next()
             } else {
                 console.log('Token verified. Decoded data:', decoded); 
-                res.redirect(`/user/dashboard/${decoded.id}`)
+                res.redirect(`/user/dashboard/${decoded._id}`)
             }
         })
     }
@@ -34,7 +34,7 @@ exports.verifyUserToken = (req,res,next) => {
                 res.send(404)
             } else {
                 console.log('Token verified. Decoded data:', decoded);
-                if(req.params.id != decoded.id) res.send(404)
+                if(req.params.id != decoded._id) res.send(404)
                 else next()
             }
         })

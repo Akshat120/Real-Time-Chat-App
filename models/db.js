@@ -1,69 +1,96 @@
-const data = require('./data')
-const jwt = require('jsonwebtoken');
+const userCollection = require('./schema').userCollection
+const friendsRelationCollection = require('./schema').friendsRelationCollection
+const messageCollection = require('./schema').messageCollection
 
 exports.check_username_and_password = (form_user) => {
-    return new Promise((resolve,reject)=>{
-        data.users.forEach(user => {
-            if(user.username === form_user.username && user.password === form_user.password) {
-                return resolve(user)
-            }
-        });
-    
-        return reject("User Not Found!")
-
+    return new Promise(async(resolve,reject)=>{
+        await userCollection.findOne({ username: form_user.username, password: form_user.password })
+        .then(data=>{
+            console.log("data=",data)
+            resolve(data)
+        })
+        .catch(err=>{
+            reject(err)
+        })
     })
 }
 
 exports.getAllFriends = (userId) => {
-    return new Promise((resolve,reject)=>{
-        friends_data = []
-        data.friends_relation.forEach( friends => {
-            if(friends.userId == userId) {
-                data.users.forEach(user => {
-                    if(friends.friends.get(user.id)) {
-                        friends_data.push({
-                            id: user.id,
-                            name: user.username,
-                        })
-                    }
+    return new Promise(async(resolve,reject)=>{
+        await friendsRelationCollection.findOne({userId: userId })
+        .then(async(data)=>{
+            let friends = []
+            await userCollection.find({
+                _id: { $in: data.friends }
+              }).then(foundFriends=>{
+                foundFriends.forEach( data =>{
+                    friends.push({
+                        name: data.username,
+                        _id: data._id
+                    })
                 })
-            }
+              }).catch(err=>{
+                reject(err)
+              })
+            resolve(friends)
         })
-
-        return resolve(friends_data)
-
+        .catch(err=>{
+            reject(err)
+        })
     })
 }
 
 exports.getUserById = (userId) => {
-    return new Promise((resolve,reject)=>{
-        data.users.forEach(user => {
-            console.log(userId, user.id)
-            if(user.id == userId) {
-                return resolve({
-                    id: user.id,
-                    name: user.username
-                })
-            }
-        });
-        return reject("User Not Found!")
+    return new Promise(async(resolve,reject)=>{
+        await userCollection.findOne({ _id: userId })
+        .then(data=>{
+            resolve(data)
+        })
+        .catch(err=>{
+            reject(err)
+        })
     })
 }
 
-exports.getChatsByIdPair = (id1, id2) => {
-    if(id1 > id2) {
-        let c = id2
-        id2 = id1
-        id1 = c
-    }
-    return new Promise((resolve,reject)=>{
-        data.message.forEach(msg => {
-            if(msg.user1 == id1 && msg.user2 == id2) {
-                msg_list = msg.messages
-                msg_list.sort((a, b) => a.sent_at - b.sent_at);
-                return resolve(msg_list)
-            }
-        });
-        return resolve([])
+exports.getChats = (user_1_id, user_2_id) => {
+    return new Promise(async(resolve,reject)=>{
+        chats = []
+
+        await messageCollection.findOne({userId:user_2_id})
+        .then(data=>{
+            data.message.forEach( msg=>{
+                if(msg.to == user_1_id) {
+                    chats.push({
+                        "from":user_2_id,
+                        "to":user_1_id,
+                        "data":msg.data,
+                        "sent_at":msg.sent_at
+                    })
+                }
+            })
+        })
+        .catch(err=>{
+            reject(err)
+        })
+
+        await messageCollection.findOne({userId:user_1_id})
+        .then(data=>{
+            data.message.forEach( msg=>{
+                if(msg.to == user_2_id) {
+                    chats.push({
+                        "from":user_1_id,
+                        "to":user_2_id,
+                        "data":msg.data,
+                        "sent_at":msg.sent_at
+                    })
+                }
+            })
+        })
+        .catch(err=>{
+            reject(err)
+        })
+
+        chats.sort((a, b) => a.sent_at - b.sent_at);
+        resolve(chats)
     })
 }
