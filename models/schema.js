@@ -16,7 +16,7 @@ const messageSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index:true },
     message: [{
-        to: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index:true },
+        to: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
         data: { type: String, required: true },
         sent_at: { type: Date, required: true }
     }]

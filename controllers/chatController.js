@@ -2,7 +2,6 @@ require('dotenv').config();
 const db = require('../models/db')
 const jwt = require('jsonwebtoken')
 
-
 exports.showChat = (req,res) => {
     if(req.params.fr_id != req.cookies.user._id) {
         db.getUserById(req.params.fr_id).then( fr_user => {
