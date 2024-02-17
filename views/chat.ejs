@@ -12,7 +12,7 @@
         .chat-container{
             display: flex;
             flex-direction: column;
-            width:30%;
+            width:100%;
             height:80vh;
             background-color: rgb(211, 211, 211);
         }
@@ -52,22 +52,30 @@
             overflow: auto;
         }
         .receiver-container{
-            background-color: rgb(245, 133, 133);
+            /* background-color: rgb(245, 133, 133); */
             width: 100%;
             align-self: flex-start;
             display:flex;
             flex-direction: row;
         }
         .sender-container{
-            background-color: rgb(90, 155, 90);
+            /* background-color: rgb(90, 155, 90); */
             width: 100%;
             align-self: flex-start;
             display:flex;
             flex-direction: row;
             justify-content: end;
         }
-        .chat-text-box{
+        .chat-text-box-sender{
             background-color: rgb(0, 17, 255);
+            width: 40%;
+            height: auto;
+            padding: 10px;
+            margin:10px;
+            align-self: center;
+        }
+        .chat-text-box-receiver{
+            background-color: rgb(184, 43, 43);
             width: 40%;
             height: auto;
             padding: 10px;
@@ -86,7 +94,7 @@
 </head>
 <body>
 
-    Welcome <a href="/"> <%= user.username %> </a> to chats with <%= fr_user.name %>
+    Welcome <a href="/"> <%= user.username %> </a> to chats with <%= fr_user.username %>
 
     <form action="/user/logout" method="post">
         <button type="submit">Logout</button>
@@ -99,100 +107,64 @@
                 <% if(user._id == msg[i].from) { %>
 
                     <div class="sender-container">
-                        <div class="chat-text-box">
+                        <div class="chat-text-box-sender">
                             <%= msg[i].data %>
                         </div>
                     </div>
 
                 <% } else { %>
                     <div class="receiver-container">
-                        <div class="chat-text-box">
+                        <div class="chat-text-box-receiver">
                             <%= msg[i].data %>
                         </div>
                     </div>
                 <% } %>
             
             <% } %>
-
-            <div class="receiver-container">
-                <div class="chat-text-box">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ac faucibus leo, at finibus ligula. Pellentesque ullamcorper lobortis elit, a mollis enim vulputate id. Nulla elementum, eros vitae ultrices sollicitudin,
-                </div>
-            </div>
-            <div class="sender-container">
-                <div class="chat-text-box">
-                    mi urna ornare quam, et vehicula leo leo eu purus. Proin malesuada leo dolor, sit amet volutpat elit tincidunt eget. Nam vitae semper ante. Fusce blandit tempus libero vehicula commodo. Etiam efficitur mattis suscipit. Nulla suscipit mi eget lacus congue imperdiet.
-                </div>
-            </div>
-            <div class="receiver-container">
-                <div class="chat-text-box">
-                    Hi $$$$, I'm $$$$.
-                </div>
-            </div>
-            <div class="sender-container">
-                <div class="chat-text-box">
-                    Hi $$$$, I'm $$$$.
-                </div>
-            </div>
-            <div class="receiver-container">
-                <div class="chat-text-box">
-                    Hi $$$$, I'm $$$$.
-                </div>
-            </div>
-            <div class="sender-container">
-                <div class="chat-text-box">
-                    Hi $$$$, I'm $$$$.
-                </div>
-            </div>
-            <div class="receiver-container">
-                <div class="chat-text-box">
-                    Hi $$$$, I'm $$$$.
-                </div>
-            </div>
-            <div class="sender-container">
-                <div class="chat-text-box">
-                    Hi $$$$, I'm $$$$.
-                </div>
-            </div>
-            <div class="receiver-container">
-                <div class="chat-text-box">
-                    Hi $$$$, I'm $$$$.
-                </div>
-            </div>
-            <div class="sender-container">
-                <div class="chat-text-box">
-                    Hi $$$$, I'm $$$$.
-                </div>
-            </div>
-            <div class="receiver-container">
-                <div class="chat-text-box">
-                    Hi $$$$, I'm $$$$.
-                </div>
-            </div>
-            <div class="sender-container">
-                <div class="chat-text-box">
-                    Hi $$$$, I'm $$$$.
-                </div>
-            </div>
-            <div class="receiver-container">
-                <div class="chat-text-box">
-                    Hi $$$$, I'm $$$$.
-                </div>
-            </div>
-            <div class="sender-container">
-                <div class="chat-text-box">
-                    Hi $$$$, I'm $$$$.
-                </div>
-            </div>
         </div>  
         <div class="write-text-container">
-            <form action='/user/<%= user.id %>/push-msg' method="post" class="write-box">
-                <textarea class="input-box" placeholder="Write your message here." ></textarea>
+            <form id="form" method="post" class="write-box">
+                <textarea class="input-box" id="input-textarea" placeholder="Write your message here." ></textarea>
+                <input type="text" id="to_id" name="to_id" value='<%= fr_user._id %>' hidden>
+                <input type="text" id="from_id" name="from_id" value='<%= user._id %>' hidden>
                 <input type="submit" id="send-chat-btn" value="Send" class="send-box">
             </form>
 
         </div>
     </div>
 
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+
+      const userId = '<%= user._id %>';
+
+      socket.emit('register', userId);
+
+      const form = document.getElementById('form');
+      const input = document.getElementById('input-textarea'); 
+      const to_id = document.getElementById('to_id').value;
+      const from_id = document.getElementById('from_id').value;
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (input.value) {
+        socket.emit('chat message', from_id, to_id, input.value);
+        input.value = '';
+        }
+        location.reload();
+    });
+
+        const messages = document.getElementById('messages');
+
+        socket.on('received-message', (sender_from_id, sender_to_id) => {
+            if(from_id == sender_to_id && to_id==sender_from_id) {
+                location.reload();
+            } else {
+                console.log("redundant-call")
+            }
+        });
+    </script>
 </body>
 </html>

@@ -94,3 +94,27 @@ exports.getChats = (user_1_id, user_2_id) => {
         resolve(chats)
     })
 }
+
+exports.sendChat = (from_id, to_id, msg) => {
+    return new Promise(async(resolve,reject)=>{
+
+        // Prepare the message object to be pushed
+        const messageData = {
+            to: to_id,
+            data: msg,
+            sent_at: new Date() // Use the current date and time
+        };
+
+        // Use $push to add the message to the message array
+        await messageCollection.findOneAndUpdate(
+            { userId: from_id }, // filter document by userId
+            { $push: { message: messageData } }, // push to the message array
+            { new: true, upsert: true } // options: return the updated document, create if not exists
+        ).then(updatedDocument=>{
+            resolve(updatedDocument);
+        }).catch(err=>{
+            resolve(err);
+        })
+    
+})
+}

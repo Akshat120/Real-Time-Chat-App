@@ -16,7 +16,7 @@
     Welcome to Dashboard <%= user.username %>
 
     <form action="/user/logout" method="post">
-        <button type="submit">Logout</button>
+        <button type="submit" id="logout-btn">Logout</button>
     </form>
 
     <table>
@@ -29,6 +29,17 @@
 
         <% }) %>
     </table>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+
+      const userId = '<%= user._id %>'; // This would be dynamically determined, e.g., after a login
+
+      socket.emit('register', userId);
+
+    </script>
 
 </body>
 </html>
