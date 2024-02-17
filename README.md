@@ -6,7 +6,8 @@
 - Database MongoDB
 ## System Design
 
-
+### Data Modeling - 
+![data_model drawio](https://github.com/Akshat120/Real-Time-Chat-App/assets/53970116/5219ca8a-ee2a-4cb4-ac56-5cf9f1ff479f)
 
 ## QnA
 Q. Why this problem can't be able to solved without special library effectively like socket.io ? <br>
