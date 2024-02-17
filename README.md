@@ -18,7 +18,8 @@
 ![route drawio](https://github.com/Akshat120/Real-Time-Chat-App/assets/53970116/ee8db331-4d40-4aaa-8a68-e0704b1bb9f0)
 
 ### Socket.io Workfow
-![socket_io drawio](https://github.com/Akshat120/Real-Time-Chat-App/assets/53970116/94b065ac-6a33-4836-90a8-d1e6fc06cd48)
+![socket_io drawio (1)](https://github.com/Akshat120/Real-Time-Chat-App/assets/53970116/98ee596e-c9ae-469b-a781-fe7c19845c6f)
+
 
 ## QnA
 Q. Why this problem can't be able to solved without special library effectively like socket.io ? <br>
