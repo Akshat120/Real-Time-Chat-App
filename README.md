@@ -1,9 +1,14 @@
 # Real-Time-Chat-App
 
 ## Tech Involved
-- Backend NodeJS ( Express ) 
-- Frontend ejs ( embedded JS )
-- Database MongoDB
+- Backend NodeJS
+  - Express - Handle Rest-APIs calls
+  - Socket.io - Provide Real-Time Chat service
+  - JWT - Maintain secure user-connection
+- Frontend ejs
+  - Embedded JS - Provide dynamic rendering
+- Database 
+  - MongoDB - Store data
 ## System Design
 
 ### Data Modeling - 
