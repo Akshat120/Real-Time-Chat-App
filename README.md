@@ -17,6 +17,9 @@
 ### Rest API Architecture
 ![route drawio](https://github.com/Akshat120/Real-Time-Chat-App/assets/53970116/ee8db331-4d40-4aaa-8a68-e0704b1bb9f0)
 
+### Socket.io Workfow
+![socket_io drawio](https://github.com/Akshat120/Real-Time-Chat-App/assets/53970116/94b065ac-6a33-4836-90a8-d1e6fc06cd48)
+
 ## QnA
 Q. Why this problem can't be able to solved without special library effectively like socket.io ? <br>
 A. yes, it can be solved using classical core properties but that will be very complex to implement it from ground. <br>
