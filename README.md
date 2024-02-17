@@ -11,8 +11,11 @@
   - MongoDB - Store data
 ## System Design
 
-### Data Modeling - 
+### Data Modeling
 ![data_model drawio (1)](https://github.com/Akshat120/Real-Time-Chat-App/assets/53970116/d62e3508-b7f1-4a7f-bf36-065bd7df3601)
+
+### Rest API Architecture
+![route drawio](https://github.com/Akshat120/Real-Time-Chat-App/assets/53970116/ee8db331-4d40-4aaa-8a68-e0704b1bb9f0)
 
 ## QnA
 Q. Why this problem can't be able to solved without special library effectively like socket.io ? <br>
