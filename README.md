@@ -12,6 +12,7 @@
 ## System Design
 
 ### Data Modeling - 
+![data_model drawio (1)](https://github.com/Akshat120/Real-Time-Chat-App/assets/53970116/d62e3508-b7f1-4a7f-bf36-065bd7df3601)
 
 ## QnA
 Q. Why this problem can't be able to solved without special library effectively like socket.io ? <br>
