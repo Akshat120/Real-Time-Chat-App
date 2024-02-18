@@ -50,7 +50,7 @@ io.on('connection', (socket) => {
         console.log(from_id, to_id, msg)
         const socketId = userId_socketId_map[to_id];
         if (socketId) {
-            io.to(socketId).emit('received-message', msg)
+            io.to(socketId).emit('received-message', from_id, msg)
         } else {
             console.log(`User ${to_id} not connected.`);
         }

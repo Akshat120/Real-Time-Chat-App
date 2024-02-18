@@ -170,8 +170,10 @@
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
-        socket.on('received-message', (msg) => {
-            addMessageToChat(msg, 'receiver');
+        socket.on('received-message', (id, msg) => {
+            if(to_id == id) {
+                addMessageToChat(msg, 'receiver');
+            }
         });
     </script>
 </body>
