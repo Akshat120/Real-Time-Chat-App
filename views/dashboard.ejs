@@ -30,16 +30,5 @@
         <% }) %>
     </table>
 
-
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-      const socket = io();
-
-      const userId = '<%= user._id %>'; // This would be dynamically determined, e.g., after a login
-
-      socket.emit('register', userId);
-
-    </script>
-
 </body>
 </html>
