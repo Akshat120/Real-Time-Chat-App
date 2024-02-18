@@ -50,18 +50,20 @@ io.on('connection', (socket) => {
         console.log(from_id, to_id, msg)
         const socketId = userId_socketId_map[to_id];
         if (socketId) {
-            io.to(socketId).emit('received-message', from_id, to_id);
+            io.to(socketId).emit('received-message', from_id, to_id).then(_data=>{
+                db.sendChat(from_id,to_id,msg).then(data=>{
+                    console.log('msg sent successfully:',data)
+                    callback();
+                }).catch(err=>{
+                    console.log('error:',err)
+                })
+            }).catch(err=>{
+                callback();
+                console.log('error:',err)
+            })
         } else {
             console.log(`User ${to_id} not connected.`);
         }
-
-        db.sendChat(from_id,to_id,msg).then(data=>{
-            console.log('msg sent successfully:',data)
-            callback();
-        }).catch(err=>{
-            console.log('error:',err)
-        })
-
     });
 
     socket.on('disconnect', userId => {
