@@ -1,6 +1,6 @@
 .PHONY: install
 install:
-	uname
+	apt-get install redis-server && service redis-server start && npm install
 
 .PHONY: dev
 dev:
