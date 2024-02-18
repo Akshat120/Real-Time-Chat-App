@@ -3,7 +3,7 @@ const { createServer } = require('node:http');
 const { Server } = require("socket.io");
 
 const redis = require('redis');
-const redisClient = redis.createClient(ENV.REDIS_URL);
+const redisClient = redis.createClient(process.env.REDIS_URL);
 
 redisClient.on('error', (err) => {
     console.error('Redis error:', err);
