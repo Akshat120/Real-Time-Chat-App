@@ -147,23 +147,31 @@
       const to_id = document.getElementById('to_id').value;
       const from_id = document.getElementById('from_id').value;
 
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        if (input.value) {
-            socket.emit('chat message', from_id, to_id, input.value, () => {
-                location.reload();
-            });
-        }
-    });
-
-        const messages = document.getElementById('messages');
-
-        socket.on('received-message', (sender_from_id, sender_to_id) => {
-            if(from_id == sender_to_id && to_id==sender_from_id) {
-                location.reload();
-            } else {
-                console.log("redundant-call")
+      form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (input.value) {
+                socket.emit('chat message', from_id, to_id, input.value, () => {
+                    addMessageToChat(input.value, 'sender');
+                    input.value = '';
+                });
             }
+        });
+
+        // Function to dynamically add messages to the chat UI
+        function addMessageToChat(message, senderOrReceiver) {
+            const chatContainer = document.querySelector('.chats-container');
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add(senderOrReceiver === 'sender' ? 'sender-container' : 'receiver-container');
+            const messageBox = document.createElement('div');
+            messageBox.classList.add(senderOrReceiver === 'sender' ? 'chat-text-box-sender' : 'chat-text-box-receiver');
+            messageBox.textContent = message;
+            messageDiv.appendChild(messageBox);
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        socket.on('received-message', (msg) => {
+            addMessageToChat(msg, 'receiver');
         });
     </script>
 </body>
