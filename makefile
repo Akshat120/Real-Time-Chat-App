@@ -1,6 +1,6 @@
 .PHONY: install
 install:
-	apt-get install redis-server && service redis-server start && npm install
+	docker run -p 6379:6379 --name my-redis -d redis && npm install
 
 .PHONY: dev
 dev:
