@@ -4,7 +4,7 @@ const { Server } = require("socket.io");
 
 const redis = require('redis');
 const redisClient = redis.createClient({
-  host: process.env.REDIS_URL, // Redis server host, use 'redis' if inside docker and using docker-compose
+  host: process.env.REDIS_HOST, // Redis server host, use 'redis' if inside docker and using docker-compose
   port: 6379, // Redis server port
   // If your Redis server requires authentication:
   // password: 'your-redis-password',
