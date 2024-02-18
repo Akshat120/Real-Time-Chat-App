@@ -46,7 +46,7 @@ io.on('connection', (socket) => {
         console.log("registered=>",userId_socketId_map)
     });
 
-    socket.on('chat message', (from_id, to_id, msg) => {
+    socket.on('chat message', (from_id, to_id, msg, callback) => {
         console.log(from_id, to_id, msg)
         const socketId = userId_socketId_map[to_id];
         if (socketId) {
@@ -57,6 +57,7 @@ io.on('connection', (socket) => {
 
         db.sendChat(from_id,to_id,msg).then(data=>{
             console.log('msg sent successfully:',data)
+            callback();
         }).catch(err=>{
             console.log('error:',err)
         })

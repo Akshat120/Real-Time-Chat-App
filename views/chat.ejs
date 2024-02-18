@@ -150,10 +150,10 @@
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         if (input.value) {
-        socket.emit('chat message', from_id, to_id, input.value);
-        input.value = '';
+            socket.emit('chat message', from_id, to_id, input.value, () => {
+                location.reload();
+            });
         }
-        location.reload();
     });
 
         const messages = document.getElementById('messages');
