@@ -1,3 +1,4 @@
+require('dotenv').config();
 require("./connectDB");
 const express = require('express')
 const { createServer } = require('node:http');
@@ -18,6 +19,24 @@ app.use(cookieParser())
 
 app.set('view engine','ejs')
 app.set("views", path.join(__dirname, "views"));
+
+// Basic authentication middleware
+const basicAuth = require('express-basic-auth');
+
+// Custom authentication function
+const myAuthorizer = (username, password) => {
+    const userMatches = basicAuth.safeCompare(username, process.env.SITE_USERNAME);
+    const passwordMatches = basicAuth.safeCompare(password, process.env.SITE_PASSWORD);
+
+    return userMatches & passwordMatches;
+};
+
+app.use(basicAuth({
+    authorizer: myAuthorizer,
+    challenge: true,
+    realm: 'My Application',
+}));
+
 
 let userId_socketId_map = {};
 
